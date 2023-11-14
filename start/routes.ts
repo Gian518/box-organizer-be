@@ -20,6 +20,8 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
+// BoxesController
+Route.get('getBox', 'BoxesController.getBox')
+Route.post('saveBox', 'BoxesController.saveBox')
+Route.delete('deleteBox', 'BoxesController.deleteBox')
+Route.get('getBoxes', 'BoxesController.getBoxes')
