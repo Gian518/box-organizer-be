@@ -28,4 +28,4 @@ yarn-error.log*
 /src/Config/env.ts
 .env
 .editorconfig
-
+/certs/*

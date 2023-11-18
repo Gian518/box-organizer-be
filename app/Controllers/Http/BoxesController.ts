@@ -44,10 +44,10 @@ export default class BoxesController {
 					rules.maxLength(180)
 				]),
 				registerDate: schema.date({
-					format: 'sql'
+					format: 'iso'
 				}),
 				photo: schema.file.optional({
-					extnames: ['jpg', 'png', 'gif', 'jpeg', 'tiff'],
+					extnames: ['jpg', 'JPG', 'png', 'PNG', 'gif', 'GIF', 'jpeg', 'JPEG', 'tiff', 'TIFF'],
 				})
 			})
 		})
@@ -71,7 +71,7 @@ export default class BoxesController {
 
 		await box.save()
 
-		return box
+		return { success: true }
 	}
 
 	/**
