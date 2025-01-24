@@ -7,19 +7,18 @@ services:
       context: .
       target: dependencies
     ports:
-      - 3003:3000
+      - 3003:3003
       - 9229:9229
     environment:
       - PORT=3003
       - APP_KEY=sXvwOfUoQKo-QeoqsC2krddOciT8Vs2h
       - DRIVE_DISK=local
       - DB_CONNECTION=sqlite
+      - DOMAIN=yourdomain.com
     volumes:
-      - ./:/home/node/app
+      - box-organizer-be:/home/node/app
       # Uncomment the below line if you developing on MacOS
       # - /home/node/app/node_modules
-    command: dumb-init node ace serve --watch --node-args="--inspect=0.0.0.0"
 
 volumes:
   box-organizer-be:
-    driver: local

@@ -1,11 +1,8 @@
-## Base - Get the repo
+## Base
 FROM node:alpine AS base
-RUN apk add --no-cache git
-RUN apk add --no-cache openssh
-RUN apk add --no-cache dumb-init
+RUN npm install pm2 -g
 RUN mkdir -p /home/node/app && chown node:node /home/node/app
 WORKDIR /home/node/app
-RUN git clone https://github.com/Gian518/box-organizer-be.git .
 USER node
 RUN mkdir tmp
 
@@ -24,8 +21,9 @@ FROM base AS production
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOST=0.0.0.0
+ENV DOMAIN=yourdomain.com
 COPY --chown=node:node ./package.json ./yarn.lock ./
 RUN yarn install --frozen-lockfile --production
 COPY --chown=node:node --from=build /home/node/app/build .
 EXPOSE $PORT
-CMD [ "dumb-init", "node", "server.js" ]
+CMD [ "pm2-runtime", "server.js" ]
