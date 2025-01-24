@@ -94,6 +94,7 @@ export default class BoxesController {
 			}
 		}
 
+		await box.photo.delete()
 		await box.delete()
 
 		return {
@@ -107,6 +108,8 @@ export default class BoxesController {
 	 * @returns An array of boxes
 	 */
 	public async getBoxes({ request }: HttpContextContract) {
+		let boxColumns: string[] = []
+		Box.$columnsDefinitions.forEach(col => boxColumns = [...boxColumns, col.columnName])
 		const payload = await request.validate({
 			schema: schema.create({
 				page: schema.number([
@@ -119,11 +122,12 @@ export default class BoxesController {
 				]),
 				perPage: schema.number.optional([
 					rules.range(1, 10000000)
-				])
+				]),
+				orderBy: schema.enum.optional(boxColumns)
 			})
 		})
 
-		const boxes = await Box.query().paginate(payload.page, payload.perPage || 10)
+		const boxes = await Box.query().orderBy(payload.orderBy ?? 'registerDate', 'asc').paginate(payload.page, payload.perPage || 10)
 
 		return {
 			data: boxes.toJSON().data,
